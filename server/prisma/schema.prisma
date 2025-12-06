@@ -5,12 +5,54 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL") // Important for Neon
+}
+
+// 1. Enums restricts inputs to valid options
+enum MedicineForm {
+  CAPSULE
+  TABLET
+  LIQUID
+  POWDER
+  GUMMY
+  INJECTION
+  TOPICAL
+  OTHER
+}
+
+enum Frequency {
+  DAILY
+  WEEKLY
+  AS_NEEDED
 }
 
 model Pill {
+  id          Int          @id @default(autoincrement())
+  
+  // ... (Keep all your existing fields: name, form, strength, etc.)
+  name        String
+  form        MedicineForm @default(CAPSULE)
+  strength    String?
+  amount      Int          @default(1)
+  unit        String
+  frequency   Frequency    @default(DAILY)
+  timesPerDay Int          @default(1)
+  currentStock Int?
+  description String?
+  
+  // --- NEW RELATIONSHIP ---
+  logs        IntakeLog[]  // This creates the link
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+// --- NEW TABLE ---
+model IntakeLog {
   id        Int      @id @default(autoincrement())
-  name      String
-  dosage    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  takenAt   DateTime @default(now()) // The exact time you clicked the button
+  
+  // The Link Back
+  pillId    Int
+  pill      Pill     @relation(fields: [pillId], references: [id], onDelete: Cascade)
 }

@@ -1,21 +1,37 @@
+import { PrismaClient, MedicineForm, Frequency } from '@prisma/client';
 
-interface Pill {
-  id: number;
-  name: string;
-  dosage: string;
-}
+const prisma = new PrismaClient();
 
-export const getAllPills = async (): Promise<Pill[]> => {
-  return [
-    { id: 1, name: "Vitamin D", dosage: "2000 IU" },
-    { id: 2, name: "Magnesium", dosage: "500mg" },
-  ];
+export const getAllPills = async () => {
+  return await prisma.pill.findMany({
+    orderBy: { createdAt: 'desc' },
+  });
 };
 
-export const createPill = async (name: string, dosage: string): Promise<Pill> => {
-  return {
-    id: Math.floor(Math.random() * 1000),
-    name,
-    dosage,
-  };
+interface CreatePillDTO {
+  name: string;
+  form: MedicineForm;
+  strength?: string;
+  amount: number;
+  unit: string;
+  frequency: Frequency;
+  timesPerDay: number;
+  currentStock?: number;
+  description?: string;
+}
+
+export const createPill = async (data: CreatePillDTO) => {
+  return await prisma.pill.create({
+    data: {
+      name: data.name,
+      form: data.form,
+      strength: data.strength ?? null,
+      amount: data.amount,
+      unit: data.unit,
+      frequency: data.frequency,
+      timesPerDay: data.timesPerDay,
+      currentStock: data.currentStock ?? null,
+      description: data.description || '',
+    },
+  });
 };
