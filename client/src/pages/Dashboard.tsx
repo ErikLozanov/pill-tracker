@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { PillCard } from '../components/PillCard';
 import { usePills } from '../hooks/usePills';
 import { Plus } from 'lucide-react';
+import { UserButton } from '@clerk/clerk-react';
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -17,8 +18,14 @@ export const Dashboard = () => {
         <header className="mb-8 flex justify-between items-end">
           <div>
              <h1 className="text-3xl font-black text-gray-900 tracking-tight">Today</h1>
-             <p className="text-gray-500 font-medium">Your daily stack</p>
+             
+             <div className="flex items-center gap-2 mt-2">
+                <UserButton afterSignOutUrl="/sign-in" />
+                <span className="text-gray-500 font-medium text-sm">Your daily stack</span>
+             </div>
           </div>
+
+          {/* ... Keep the existing "Done" badge ... */}
           <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold">
             {pills?.filter(p => p.logs && p.logs.length > 0 && new Date(p.logs[0].takenAt).toDateString() === new Date().toDateString()).length}/{pills?.length} Done
           </div>

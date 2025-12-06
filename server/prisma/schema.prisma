@@ -27,7 +27,7 @@ enum Frequency {
 
 model Pill {
   id          Int          @id @default(autoincrement())
-  
+  userId      String      
   name        String
   form        MedicineForm @default(CAPSULE)
   amount      Int          @default(1)
