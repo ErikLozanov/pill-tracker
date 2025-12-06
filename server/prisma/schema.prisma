@@ -8,7 +8,6 @@ datasource db {
   directUrl = env("DIRECT_URL") // Important for Neon
 }
 
-// 1. Enums restricts inputs to valid options
 enum MedicineForm {
   CAPSULE
   TABLET
@@ -29,10 +28,8 @@ enum Frequency {
 model Pill {
   id          Int          @id @default(autoincrement())
   
-  // ... (Keep all your existing fields: name, form, strength, etc.)
   name        String
   form        MedicineForm @default(CAPSULE)
-  strength    String?
   amount      Int          @default(1)
   unit        String
   frequency   Frequency    @default(DAILY)
@@ -41,7 +38,7 @@ model Pill {
   description String?
   
   // --- NEW RELATIONSHIP ---
-  logs        IntakeLog[]  // This creates the link
+  logs        IntakeLog[]  
 
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt

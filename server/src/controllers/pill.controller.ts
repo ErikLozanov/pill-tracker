@@ -39,3 +39,20 @@ export const addPill = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error adding pill" });
   }
 };
+
+export const logPill = async (req: Request, res: Response) => {
+  try {
+    const pillId = Number(req.params.id);
+    
+    if (!pillId) {
+      res.status(400).json({ message: "Invalid ID" });
+      return;
+    }
+
+    const log = await pillService.logIntake(pillId);
+    res.status(201).json(log);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error logging intake" });
+  }
+};

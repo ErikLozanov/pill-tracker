@@ -9,5 +9,5 @@ router.get('/', pillController.getPills);
 
 // POST http://localhost:3000/api/pills
 router.post('/', pillController.addPill);
-
+router.post('/:id/log', pillController.logPill);
 export default router;
