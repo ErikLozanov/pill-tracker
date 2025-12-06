@@ -1,0 +1,19 @@
+# Dependencies
+node_modules
+npm-debug.log
+
+# Environment variables (Sensitive data!)
+.env
+
+# Compiled TypeScript output
+dist
+build
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+/src/generated/prisma
